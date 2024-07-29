@@ -3,13 +3,13 @@ import requests
 import pandas as pd
 import pickle
 
-# Load movie data and similarity data
+
 pickle_off1 = open(r"movie_list.pkl", "rb")
 movies = pickle.load(pickle_off1)
 pickle_off2 = open(r"similarity.pkl", "rb")
 similarity = pickle.load(pickle_off2)
 
-# Function to fetch movie poster from TMDB
+
 def fetch_poster(movie_id):
     url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key=85b72b6ccbbe930471e2de94f825db8b&language=en-US"
     data = requests.get(url).json()
@@ -17,7 +17,7 @@ def fetch_poster(movie_id):
     full_path = f"https://image.tmdb.org/t/p/w500/{poster_path}"
     return full_path
 
-# Function to recommend movies based on similarity
+
 def recommend(movie):
     index = movies[movies['title'] == movie].index[0]
     distances = sorted(list(enumerate(similarity[index])), reverse=True, key=lambda x: x[1])
@@ -29,7 +29,7 @@ def recommend(movie):
         recommended_movie_names.append(movies.iloc[i[0]].title)
     return recommended_movie_names, recommended_movie_posters
 
-# Custom CSS for styling
+
 st.markdown(
     """
     <style>
@@ -82,7 +82,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Streamlit application UI
+
 st.markdown('<div class="stHeader">🎬 Movie Recommendation System 🍿</div>', unsafe_allow_html=True)
 movie_list = movies['title'].values
 selected_movie = st.selectbox("Type or select a movie from the dropdown", movie_list)
@@ -95,7 +95,7 @@ if st.button('Show Recommendations'):
             st.text(name)
             st.image(poster, use_column_width=True)
 
-# Add footer
+
 st.markdown(
     """
     <div class='footer'>
